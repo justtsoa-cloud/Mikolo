@@ -4,8 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>École Mikolo - Excellence & Épanouissement</title>
+  <meta name="description" content="École Mikolo : de la maternelle au lycée, excellence académique et épanouissement personnel.">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet">
   <style>
+
     /* ===== VARIABLES & RESET ===== */
     :root {
       --rouge: #c00000;
@@ -99,6 +101,7 @@
       font-size: 1.1rem; font-weight: 900; color: var(--rouge);
       letter-spacing: 2px; padding: 5px 15px 5px 5px;
       border-radius: 40px; transition: var(--transition); cursor: pointer;
+      text-decoration: none;
     }
     .nav-logo-img {
       width: 42px; height: 42px;
@@ -204,7 +207,7 @@
       }
     }
 
-    /* ===== HERO ===== */
+    /* ===== HERO (accueil) ===== */
     .hero {
       height: 100vh;
       background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)), url('https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=1920&auto=format&fit=crop') center/cover no-repeat;
@@ -224,6 +227,23 @@
       font-size: 2rem; color: white; animation: bounceDown 2s infinite;
     }
 
+    /* ===== BANNIÈRE DE PAGE (pages intérieures) ===== */
+    .page-banner {
+      padding: 180px 20px 90px;
+      background: linear-gradient(135deg, var(--rouge-fonce), var(--rouge));
+      color: white; text-align: center;
+    }
+    .page-banner h1 {
+      font-size: 2.8rem; font-weight: 900;
+      text-transform: uppercase; letter-spacing: 2px;
+    }
+    .page-banner p {
+      margin-top: 15px; font-size: 1.1rem; opacity: 0.9;
+      max-width: 700px; margin-left: auto; margin-right: auto;
+    }
+    .breadcrumb { margin-top: 20px; font-size: 0.85rem; opacity: 0.85; }
+    .breadcrumb a { color: white; text-decoration: underline; }
+
     .btn {
       display: inline-block; padding: 15px 40px;
       background: var(--rouge); color: white;
@@ -241,6 +261,14 @@
     .btn-vert { background: var(--vert); border-color: var(--vert); }
     .btn-vert:hover { box-shadow: 0 0 20px rgba(46, 125, 50, 0.6); }
 
+    .lien-plus {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: var(--rouge); font-weight: 700; text-decoration: none;
+      text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem;
+      margin-top: 30px; transition: var(--transition);
+    }
+    .lien-plus:hover { gap: 14px; color: var(--rouge-fonce); }
+
     /* ===== SECTIONS ===== */
     section { padding: 100px 20px; position: relative; }
     .container { max-width: 1200px; margin: 0 auto; }
@@ -256,14 +284,20 @@
       background: var(--rouge); border-radius: 2px;
     }
     .section-header p { color: #666; margin-top: 15px; font-size: 1.1rem; }
+    .section-header.left { text-align: left; }
+    .section-header.left h2::after { left: 0; transform: none; }
 
-    /* ===== HISTOIRE ===== */
+    /* ===== HISTOIRE / BLOCS ALTERNÉS (réutilisé par Programmes) ===== */
     .histoire-grid {
       display: grid; grid-template-columns: 1fr 1fr;
       gap: 60px; align-items: center;
+      margin-bottom: 80px;
     }
+    .histoire-grid:last-child { margin-bottom: 0; }
+    .histoire-grid.reverse .histoire-image { order: -1; }
     .histoire-text h3 { font-size: 1.8rem; color: var(--rouge); margin-bottom: 20px; }
     .histoire-text p { margin-bottom: 20px; line-height: 1.8; color: #555; }
+    .histoire-text ul { margin: 0 0 20px 20px; color: #555; line-height: 1.9; }
     .histoire-image {
       height: 400px;
       background: url('https://images.unsplash.com/photo-1580582932707-520aed937b7b?q=80&w=1000&auto=format&fit=crop') center/cover;
@@ -271,6 +305,21 @@
       box-shadow: 20px 20px 0px var(--vert);
       position: relative;
     }
+
+    /* ===== TIMELINE (Histoire) ===== */
+    .timeline {
+      position: relative; max-width: 800px; margin: 0 auto;
+      padding-left: 40px; border-left: 3px solid var(--rouge);
+    }
+    .timeline-item { position: relative; margin-bottom: 45px; }
+    .timeline-item:last-child { margin-bottom: 0; }
+    .timeline-item::before {
+      content: ''; position: absolute; left: -49px; top: 4px;
+      width: 16px; height: 16px; border-radius: 50%;
+      background: var(--vert); box-shadow: 0 0 0 4px white, 0 0 0 5px var(--rouge);
+    }
+    .timeline-year { font-size: 1.4rem; font-weight: 900; color: var(--rouge); margin-bottom: 8px; }
+    .timeline-item p { color: #555; line-height: 1.8; }
 
     /* ===== COMPTEURS ANIMÉS ===== */
     .compteurs {
@@ -286,36 +335,23 @@
       margin: 0 auto;
       text-align: center;
     }
-    .compteur-item {
-      padding: 20px;
-    }
+    .compteur-item { padding: 20px; }
     .compteur-number {
-      font-size: 4rem;
-      font-weight: 900;
-      color: white;
-      display: inline-block;
-      text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      font-size: 4rem; font-weight: 900; color: white;
+      display: inline-block; text-shadow: 0 4px 20px rgba(0,0,0,0.3);
     }
-    .compteur-number::after {
-      content: '+';
-      color: var(--vert-clair);
-      font-size: 2.5rem;
-    }
+    .compteur-number::after { content: '+'; color: var(--vert-clair); font-size: 2.5rem; }
     .compteur-item.no-plus .compteur-number::after { content: ''; }
     .compteur-label {
-      font-size: 1rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      opacity: 0.9;
-      margin-top: 10px;
+      font-size: 1rem; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 2px; opacity: 0.9; margin-top: 10px;
     }
 
-    /* ===== PROGRAMMES ===== */
+    /* ===== VALEURS / PROGRAMMES (cartes) ===== */
     .programmes { background: var(--gris-clair); }
     .prog-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 30px;
     }
     .prog-card {
@@ -363,6 +399,115 @@
       color: white; font-weight: 700; font-size: 1.2rem; letter-spacing: 2px;
     }
     .galerie-item:hover .galerie-overlay { opacity: 1; }
+    .galerie-categorie { margin-bottom: 60px; }
+    .galerie-categorie:last-child { margin-bottom: 0; }
+    .galerie-categorie h3 {
+      font-size: 1.4rem; color: var(--rouge); margin-bottom: 25px;
+      padding-bottom: 10px; border-bottom: 3px solid var(--gris-clair);
+    }
+
+    /* ===== ÉQUIPE ===== */
+    .team-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 30px;
+    }
+    .team-card {
+      background: white; border-radius: 30px; padding: 40px 30px; text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05); transition: var(--transition);
+    }
+    .team-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(192,0,0,0.1); }
+    .team-avatar {
+      width: 90px; height: 90px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--rouge), var(--rouge-fonce));
+      color: white; display: flex; align-items: center; justify-content: center;
+      font-size: 2rem; font-weight: 900; margin: 0 auto 20px;
+    }
+    .team-card h3 { color: var(--rouge); margin-bottom: 5px; font-size: 1.2rem; }
+    .team-role {
+      color: var(--vert); font-weight: 700; font-size: 0.8rem;
+      text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px;
+    }
+    .team-card p { color: #666; font-size: 0.9rem; line-height: 1.6; }
+
+    /* ===== ACTUALITÉS ===== */
+    .news-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 30px;
+    }
+    .news-card {
+      background: white; border-radius: 25px; overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05); transition: var(--transition);
+    }
+    .news-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(192,0,0,0.1); }
+    .news-img { height: 180px; background-size: cover; background-position: center; }
+    .news-body { padding: 25px; }
+    .news-date {
+      color: var(--vert); font-weight: 700; font-size: 0.8rem;
+      text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; display: block;
+    }
+    .news-card h3 { color: var(--rouge); margin-bottom: 10px; font-size: 1.15rem; }
+    .news-card p { color: #666; font-size: 0.9rem; line-height: 1.6; }
+
+    /* ===== INSCRIPTIONS : ÉTAPES ===== */
+    .steps-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 30px;
+    }
+    .step-card {
+      background: white; border-radius: 25px; padding: 35px 25px; text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    }
+    .step-number {
+      width: 50px; height: 50px; border-radius: 50%; background: var(--rouge);
+      color: white; font-weight: 900; font-size: 1.3rem;
+      display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;
+    }
+    .step-card h3 { color: var(--rouge); font-size: 1.1rem; margin-bottom: 10px; }
+    .step-card p { color: #666; font-size: 0.9rem; line-height: 1.6; }
+
+    .docs-list { list-style: none; max-width: 700px; margin: 0 auto; }
+    .docs-list li {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 15px 0; border-bottom: 1px solid #eee; color: #555; line-height: 1.6;
+    }
+    .docs-list li span.check { color: var(--vert); font-size: 1.3rem; flex-shrink: 0; }
+
+    /* ===== FAQ (natif, sans JS) ===== */
+    .faq-item {
+      background: white; border-radius: 20px; margin-bottom: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05); overflow: hidden;
+      max-width: 800px; margin-left: auto; margin-right: auto; margin-bottom: 15px;
+    }
+    .faq-item summary {
+      padding: 22px 25px; font-weight: 700; color: var(--rouge); cursor: pointer;
+      list-style: none; display: flex; justify-content: space-between; align-items: center;
+    }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary::after { content: '+'; font-size: 1.5rem; color: var(--vert); transition: var(--transition); }
+    .faq-item[open] summary::after { content: '−'; }
+    .faq-item .faq-answer { padding: 0 25px 22px; color: #666; line-height: 1.7; }
+
+    /* ===== CONTACT ===== */
+    .info-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 25px; margin-bottom: 50px;
+    }
+    .info-card {
+      background: white; border-radius: 25px; padding: 35px 25px; text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    }
+    .info-icon { font-size: 2.5rem; margin-bottom: 15px; }
+    .info-card h3 {
+      color: var(--rouge); font-size: 1rem; margin-bottom: 10px;
+      text-transform: uppercase; letter-spacing: 1px;
+    }
+    .info-card p { color: #666; line-height: 1.7; }
+    .info-card a { color: var(--vert); font-weight: 700; text-decoration: none; }
+    .map-wrap {
+      border-radius: 30px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      height: 400px;
+    }
+    .map-wrap iframe { width: 100%; height: 100%; border: 0; }
 
     /* ===== PLACEHOLDER SECTIONS ===== */
     .placeholder-section {
@@ -390,16 +535,12 @@
     /* ========================================= */
     /* ===== 🔥 ANIMATIONS AU SCROLL ============ */
     /* ========================================= */
-
-    /* Base : tout est invisible au départ */
     [data-anim] {
       opacity: 0;
       transition: opacity 0.9s cubic-bezier(0.25, 0.8, 0.25, 1),
                   transform 0.9s cubic-bezier(0.25, 0.8, 0.25, 1);
       will-change: opacity, transform;
     }
-
-    /* Différents types d'animations au départ */
     [data-anim="fade-up"] { transform: translateY(60px); }
     [data-anim="fade-down"] { transform: translateY(-60px); }
     [data-anim="fade-left"] { transform: translateX(-80px); }
@@ -407,14 +548,10 @@
     [data-anim="zoom-in"] { transform: scale(0.7); }
     [data-anim="rotate"] { transform: rotate(-15deg) scale(0.8); }
     [data-anim="flip"] { transform: perspective(600px) rotateY(90deg); }
-
-    /* État final : visible et bien positionné */
     [data-anim].anim-in {
       opacity: 1;
       transform: translateY(0) translateX(0) scale(1) rotate(0) perspective(600px) rotateY(0);
     }
-
-    /* Effet cascade (chaque élément a un délai progressif) */
     [data-anim][data-delay="1"] { transition-delay: 0.15s; }
     [data-anim][data-delay="2"] { transition-delay: 0.30s; }
     [data-anim][data-delay="3"] { transition-delay: 0.45s; }
@@ -456,6 +593,7 @@
     }
     @media (max-width: 992px) {
       .histoire-grid { grid-template-columns: 1fr; }
+      .histoire-grid.reverse .histoire-image { order: 0; }
       .histoire-image { box-shadow: 10px 10px 0px var(--vert); height: 300px; }
       .hero h1 { font-size: 2.8rem; }
     }
@@ -479,10 +617,14 @@
         border-radius: 50px; width: 100%;
       }
       .hero h1 { font-size: 2.2rem; }
-      .logo-m { font-size: 4rem; }
+      .page-banner h1 { font-size: 2rem; }
+      .page-banner { padding: 160px 20px 70px; }
       header { top: 10px; }
       .compteur-number { font-size: 2.8rem; }
+      .timeline { padding-left: 30px; }
+      .timeline-item::before { left: -39px; }
     }
+
   </style>
 </head>
 <body>
@@ -501,21 +643,21 @@
   <!-- ===== HEADER ===== -->
   <header id="header">
     <div class="nav-container">
-      <div class="nav-logo" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+      <a href="index.html" class="nav-logo">
         <img src="logo.jpg" alt="Mikolo" class="nav-logo-img">
         MIKOLO
-      </div>
+      </a>
       <button class="menu-toggle" id="menuToggle">☰</button>
       <nav id="mainNav">
         <ul>
-          <li><a href="#accueil" class="active">Accueil</a></li>
-          <li><a href="#histoire">Histoire</a></li>
-          <li><a href="#programmes">Programmes</a></li>
-          <li><a href="#galerie">Galerie</a></li>
-          <li><a href="#equipe">Équipe</a></li>
-          <li><a href="#actualites">Actualités</a></li>
-          <li><a href="#inscriptions">Inscriptions</a></li>
-          <li><a href="#contact">Contact</a></li>
+          <li><a href="index.html" class="active">Accueil</a></li>
+          <li><a href="histoire.html">Histoire</a></li>
+          <li><a href="programmes.html">Programmes</a></li>
+          <li><a href="galerie.html">Galerie</a></li>
+          <li><a href="equipe.html">Équipe</a></li>
+          <li><a href="actualites.html">Actualités</a></li>
+          <li><a href="inscriptions.html">Inscriptions</a></li>
+          <li><a href="contact.html">Contact</a></li>
           <!-- ===== BOUTON ESPACE PARENTS ===== -->
           <li>
             <a href="https://mikolo.pythonanywhere.com"
@@ -530,19 +672,18 @@
       </nav>
     </div>
   </header>
-
   <!-- ===== HERO ===== -->
-  <section class="hero" id="accueil">
+  <section class="hero">
     <div class="hero-content">
       <h1>Bienvenue à l'École <br><span>MIKOLO</span></h1>
       <p>L'excellence académique et l'épanouissement personnel au cœur de notre projet éducatif.</p>
-      <a href="#inscriptions" class="btn">S'inscrire maintenant</a>
+      <a href="inscriptions.html" class="btn">S'inscrire maintenant</a>
     </div>
     <div class="hero-scroll-hint">⌄</div>
   </section>
 
-  <!-- ===== HISTOIRE ===== -->
-  <section id="histoire">
+  <!-- ===== HISTOIRE (résumé) ===== -->
+  <section>
     <div class="container">
       <div class="section-header">
         <h2 data-anim="fade-up">Notre Histoire</h2>
@@ -551,9 +692,9 @@
       <div class="histoire-grid">
         <div class="histoire-text">
           <h3 data-anim="fade-right">Plus qu'une école, une famille</h3>
-          <p data-anim="fade-right" data-delay="1">Fondée en 1995, l'École Mikolo a vu le jour grâce à la vision de pédagogues passionnés. Leur rêve ? Créer un lieu où chaque enfant pourrait grandir, apprendre et s'épanouir dans un cadre bienveillant et exigeant.</p>
-          <p data-anim="fade-right" data-delay="2">Aujourd'hui, Mikolo est devenue une référence dans la région. Notre approche pédagogique unique allie les programmes officiels à des ateliers d'ouverture culturelle et de développement personnel.</p>
-          <p data-anim="fade-right" data-delay="3">Nos valeurs sont simples : <strong>le Respect, l'Excellence et la Solidarité</strong>. Ces piliers guident nos actions au quotidien.</p>
+          <p data-anim="fade-right" data-delay="1">Fondée en 1995, l'École Mikolo a vu le jour grâce à la vision de pédagogues passionnés, convaincus que chaque enfant mérite un cadre bienveillant et exigeant pour grandir et s'épanouir.</p>
+          <p data-anim="fade-right" data-delay="2">Nos valeurs sont simples : <strong>le Respect, l'Excellence et la Solidarité</strong>. Ces piliers guident nos actions au quotidien.</p>
+          <a href="histoire.html" class="lien-plus" data-anim="fade-right" data-delay="3">En savoir plus sur notre histoire →</a>
         </div>
         <div class="histoire-image" data-anim="zoom-in"></div>
       </div>
@@ -582,7 +723,7 @@
     </div>
   </section>
 
-  <!-- ===== PROGRAMMES ===== -->
+  <!-- ===== PROGRAMMES (résumé) ===== -->
   <section id="programmes" class="programmes">
     <div class="container">
       <div class="section-header">
@@ -593,29 +734,32 @@
         <div class="prog-card" data-anim="fade-up" data-delay="1">
           <div class="prog-icon">🧸</div>
           <h3>Maternelle</h3>
-          <p>Éveil, socialisation et découverte par le jeu. Un environnement chaleureux pour les premiers pas à l'école.</p>
+          <p>Éveil, socialisation et découverte par le jeu.</p>
         </div>
         <div class="prog-card" data-anim="fade-up" data-delay="2">
           <div class="prog-icon">✏️</div>
           <h3>Primaire</h3>
-          <p>Apprentissage des fondamentaux : lecture, écriture, mathématiques, avec une attention particulière à l'épanouissement.</p>
+          <p>Apprentissage des fondamentaux et épanouissement.</p>
         </div>
         <div class="prog-card" data-anim="fade-up" data-delay="3">
           <div class="prog-icon">📚</div>
           <h3>Collège</h3>
-          <p>Développement de l'esprit critique, autonomie et méthodes de travail solides pour préparer l'avenir.</p>
+          <p>Esprit critique, autonomie et méthode de travail.</p>
         </div>
         <div class="prog-card" data-anim="fade-up" data-delay="4">
           <div class="prog-icon">🎓</div>
           <h3>Lycée</h3>
-          <p>Préparation aux examens, orientation personnalisée et accompagnement vers l'enseignement supérieur.</p>
+          <p>Préparation aux examens et orientation post-bac.</p>
         </div>
+      </div>
+      <div style="text-align:center;">
+        <a href="programmes.html" class="lien-plus" data-anim="fade-up" data-delay="5">Voir le détail de tous les programmes →</a>
       </div>
     </div>
   </section>
 
-  <!-- ===== GALERIE ===== -->
-  <section id="galerie">
+  <!-- ===== GALERIE (résumé) ===== -->
+  <section>
     <div class="container">
       <div class="section-header">
         <h2 data-anim="fade-up">Galerie</h2>
@@ -639,11 +783,14 @@
           <div class="galerie-overlay">Activités</div>
         </div>
       </div>
+      <div style="text-align:center;">
+        <a href="galerie.html" class="lien-plus" data-anim="fade-up">Voir toute la galerie →</a>
+      </div>
     </div>
   </section>
 
-  <!-- ===== ÉQUIPE ===== -->
-  <section id="equipe" style="background: var(--gris-clair);">
+  <!-- ===== ÉQUIPE (résumé) ===== -->
+  <section style="background: var(--gris-clair);">
     <div class="container">
       <div class="section-header">
         <h2 data-anim="fade-up">Notre Équipe</h2>
@@ -652,26 +799,44 @@
       <div class="placeholder-section" style="background: white; border: none; box-shadow: 0 10px 30px rgba(0,0,0,0.05);" data-anim="zoom-in">
         <h3>Une équipe dévouée</h3>
         <p>Nos enseignants et notre personnel administratif sont sélectionnés pour leur expertise et leur bienveillance.</p>
+        <a href="equipe.html" class="lien-plus">Découvrir toute l'équipe →</a>
       </div>
     </div>
   </section>
 
-  <!-- ===== ACTUALITÉS ===== -->
-  <section id="actualites">
+  <!-- ===== ACTUALITÉS (résumé) ===== -->
+  <section>
     <div class="container">
       <div class="section-header">
         <h2 data-anim="fade-up">Actualités</h2>
         <p data-anim="fade-up" data-delay="1">Les dernières nouvelles de l'école</p>
       </div>
-      <div class="placeholder-section" data-anim="fade-up" data-delay="2">
-        <h3>Restez informés</h3>
-        <p>Retrouvez ici nos événements, sorties scolaires, spectacles et temps forts de l'année.</p>
+      <div class="news-grid">
+        <div class="news-card" data-anim="fade-up" data-delay="1">
+          <div class="news-img" style="background-image:url('https://images.unsplash.com/photo-1588072432836-e10032774350?q=80&w=800&auto=format&fit=crop');"></div>
+          <div class="news-body">
+            <span class="news-date">Septembre 2026</span>
+            <h3>Rentrée scolaire</h3>
+            <p>Toute l'équipe a accueilli ses élèves pour une nouvelle année scolaire.</p>
+          </div>
+        </div>
+        <div class="news-card" data-anim="fade-up" data-delay="2">
+          <div class="news-img" style="background-image:url('https://images.unsplash.com/photo-1540479859555-17af45c78602?q=80&w=800&auto=format&fit=crop');"></div>
+          <div class="news-body">
+            <span class="news-date">Décembre 2026</span>
+            <h3>Spectacle de fin d'année</h3>
+            <p>Chant, théâtre et danse devant les familles des élèves.</p>
+          </div>
+        </div>
+      </div>
+      <div style="text-align:center;">
+        <a href="actualites.html" class="lien-plus" data-anim="fade-up">Voir toutes les actualités →</a>
       </div>
     </div>
   </section>
 
-  <!-- ===== INSCRIPTIONS ===== -->
-  <section id="inscriptions" style="background: var(--gris-clair);">
+  <!-- ===== INSCRIPTIONS (résumé) ===== -->
+  <section style="background: var(--gris-clair);">
     <div class="container">
       <div class="section-header">
         <h2 data-anim="fade-up">Inscriptions</h2>
@@ -679,14 +844,15 @@
       </div>
       <div class="placeholder-section" style="background: white; border: none; text-align: center;" data-anim="zoom-in">
         <h3>Prêt à nous rejoindre ?</h3>
-        <p style="margin-bottom: 30px;">Les inscriptions sont ouvertes pour l'année scolaire à venir. Contactez notre secrétariat pour prendre rendez-vous.</p>
-        <a href="#contact" class="btn btn-vert">Nous Contacter</a>
+        <p style="margin-bottom: 30px;">Les inscriptions sont ouvertes pour l'année scolaire à venir. Découvrez les étapes et les documents à préparer.</p>
+        <a href="inscriptions.html" class="btn" style="margin-right:12px;">Voir les modalités</a>
+        <a href="contact.html" class="btn btn-vert">Nous Contacter</a>
       </div>
     </div>
   </section>
 
-  <!-- ===== CONTACT ===== -->
-  <section id="contact">
+  <!-- ===== CONTACT (résumé) ===== -->
+  <section>
     <div class="container">
       <div class="section-header">
         <h2 data-anim="fade-up">Contact</h2>
@@ -697,6 +863,7 @@
         <p>📍 123 Avenue de la Réussite, 75000 Paris<br><br>
         📞 +33 1 23 45 67 89<br><br>
         ✉️ contact@ecole-mikolo.fr</p>
+        <a href="contact.html" class="lien-plus">Voir le plan et tous les contacts →</a>
       </div>
     </div>
   </section>
@@ -711,19 +878,19 @@
       <div class="footer-col" data-anim="fade-up" data-delay="1">
         <h4>Navigation</h4>
         <ul>
-          <li><a href="#accueil">Accueil</a></li>
-          <li><a href="#histoire">Notre Histoire</a></li>
-          <li><a href="#programmes">Programmes</a></li>
-          <li><a href="#galerie">Galerie</a></li>
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="histoire.html">Notre Histoire</a></li>
+          <li><a href="programmes.html">Programmes</a></li>
+          <li><a href="galerie.html">Galerie</a></li>
         </ul>
       </div>
       <div class="footer-col" data-anim="fade-up" data-delay="2">
         <h4>Informations</h4>
         <ul>
-          <li><a href="#inscriptions">Inscriptions</a></li>
-          <li><a href="#actualites">Actualités</a></li>
-          <li><a href="#contact">Contact</a></li>
-          <li><a href="#">Mentions légales</a></li>
+          <li><a href="equipe.html">Équipe</a></li>
+          <li><a href="inscriptions.html">Inscriptions</a></li>
+          <li><a href="actualites.html">Actualités</a></li>
+          <li><a href="contact.html">Contact</a></li>
         </ul>
       </div>
     </div>
@@ -739,7 +906,6 @@
       const preloader = document.getElementById('preloader');
       setTimeout(() => {
         preloader.classList.add('hidden');
-        // Lancer l'animation des compteurs après le preloader
         setTimeout(startCompteurs, 500);
       }, 3000);
     });
@@ -760,25 +926,24 @@
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('anim-in');
-          // Optionnel : arrêter d'observer une fois l'animation jouée
           observer.unobserve(entry.target);
         }
       });
     }, {
-      threshold: 0.15, // L'élément doit être visible à 15%
-      rootMargin: '0px 0px -50px 0px' // Déclenche un peu avant la fin
+      threshold: 0.15,
+      rootMargin: '0px 0px -50px 0px'
     });
 
     animatedElements.forEach(el => observer.observe(el));
 
-    // 4. 🔥 COMPTEURS ANIMÉS
+    // 4. 🔥 COMPTEURS ANIMÉS (no-op si aucun .compteur-number sur la page)
     let compteursStarted = false;
     function startCompteurs() {
       if (compteursStarted) return;
       compteursStarted = true;
 
       const compteurs = document.querySelectorAll('.compteur-number');
-      
+
       const compteurObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
@@ -790,7 +955,6 @@
 
             function animate(now) {
               const progress = Math.min((now - start) / duration, 1);
-              // Easing pour un effet plus naturel
               const eased = 1 - Math.pow(1 - progress, 3);
               el.textContent = Math.floor(eased * target) + (progress === 1 ? suffix : '');
               if (progress < 1) {
@@ -829,31 +993,6 @@
         header.classList.remove('scrolled');
       }
     });
-
-    // 7. ONGLET ACTIF AUTOMATIQUE
-    const sections = document.querySelectorAll('section[id]');
-    const navLinks = document.querySelectorAll('nav a');
-
-    const highlightActiveTab = () => {
-      const scrollY = window.pageYOffset;
-      sections.forEach(section => {
-        const sectionHeight = section.offsetHeight;
-        const sectionTop = section.offsetTop - 200;
-        const sectionId = section.getAttribute('id');
-        if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
-          navLinks.forEach(link => {
-            // On exclut le bouton Espace Parents de la détection
-            if (link.classList.contains('btn-espace-parents')) return;
-
-            link.classList.remove('active');
-            if (link.getAttribute('href') === '#' + sectionId) {
-              link.classList.add('active');
-            }
-          });
-        }
-      });
-    };
-    window.addEventListener('scroll', highlightActiveTab);
   </script>
 </body>
 </html>
