@@ -632,14 +632,6 @@
   <!-- ===== BARRE DE PROGRESSION ===== -->
   <div id="progress-bar"></div>
 
-  <!-- ===== PRELOADER ===== -->
-  <div id="preloader">
-    <div class="logo-intro">
-      <img src="logo.jpg" alt="Mikolo" class="logo-img-intro">
-    </div>
-    <div class="loading-bar"></div>
-  </div>
-
   <!-- ===== HEADER ===== -->
   <header id="header">
     <div class="nav-container">
@@ -792,13 +784,17 @@
 
   <!-- ===== JAVASCRIPT ===== -->
   <script>
-    // 1. PRELOADER
+    // 1. PRELOADER (présent sur l'accueil uniquement)
     window.addEventListener('load', () => {
       const preloader = document.getElementById('preloader');
-      setTimeout(() => {
-        preloader.classList.add('hidden');
-        setTimeout(startCompteurs, 500);
-      }, 3000);
+      if (preloader) {
+        setTimeout(() => {
+          preloader.classList.add('hidden');
+          setTimeout(startCompteurs, 500);
+        }, 3000);
+      } else {
+        startCompteurs();
+      }
     });
 
     // 2. BARRE DE PROGRESSION DE LECTURE
