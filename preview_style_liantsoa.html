@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>École Mikolo - Apprendre avec le sourire [APERÇU STYLE LIANTSOA]</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ===== VARIABLES & RESET ===== */
+    /* Palette gardée = celle de Mikolo (rouge/vert), structure/police = celle de Liantsoa School */
+    :root {
+      --bleu: #c00000;         /* role "titres dominants" -> rouge Mikolo */
+      --bleu-fonce: #8a0000;
+      --bleu-vif: #4caf50;     /* role "accent secondaire clair" -> vert-clair Mikolo */
+      --corail: #2e7d32;       /* role "CTA/accent" -> vert Mikolo */
+      --corail-fonce: #1b5e20;
+      --jaune: #ff3333;        /* role "petit accent/point" -> rouge clair Mikolo */
+      --creme: #f6f4f1;
+      --creme-fonce: #e9e6e0;
+      --blanc: #ffffff;
+      --gris-fonce: #222222;
+      --gris-doux: #666666;
+      --transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Nunito', sans-serif; color: var(--gris-fonce); background-color: var(--creme); overflow-x: hidden; }
+    ::selection { background: var(--jaune); color: white; }
+
+    #apercu-badge{
+      position: fixed; bottom: 16px; right: 16px; z-index: 100000;
+      background: #111; color: #fff; font-size: 0.72rem; font-weight: 700;
+      padding: 8px 14px; border-radius: 30px; letter-spacing: 0.5px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    }
+
+    #progress-bar {
+      position: fixed; top: 0; left: 0; height: 4px; width: 0%;
+      background: linear-gradient(90deg, var(--corail), var(--bleu-vif));
+      z-index: 9999; transition: width 0.1s linear;
+    }
+
+    #preloader {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: var(--creme);
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      z-index: 99999; transition: opacity 0.7s ease, visibility 0.7s ease;
+    }
+    #preloader.hidden { opacity: 0; visibility: hidden; }
+    .logo-sticker-intro {
+      background: var(--blanc); border-radius: 26px; padding: 26px 36px;
+      box-shadow: 0 16px 40px rgba(192, 0, 0, 0.18);
+      transform: rotate(-3deg) scale(0.85); opacity: 0;
+      animation: stickerIn 0.9s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    }
+    .logo-sticker-intro img { display: block; height: 190px; width: auto; border-radius: 50%; }
+    .loading-dots { margin-top: 28px; display: flex; gap: 8px; }
+    .loading-dots span { width: 10px; height: 10px; border-radius: 50%; background: var(--corail); animation: dotBounce 1.2s ease-in-out infinite; }
+    .loading-dots span:nth-child(2) { background: var(--jaune); animation-delay: 0.15s; }
+    .loading-dots span:nth-child(3) { background: var(--bleu-vif); animation-delay: 0.3s; }
+
+    header {
+      position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+      background: rgba(246, 244, 241, 0.92);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      border-bottom: 3px dashed rgba(192, 0, 0, 0.25); transition: var(--transition);
+    }
+    .nav-container { max-width: 1300px; margin: 0 auto; padding: 14px 30px; display: flex; justify-content: space-between; align-items: center; transition: var(--transition); }
+    header.scrolled .nav-container { padding: 8px 30px; }
+    header.scrolled { box-shadow: 0 6px 20px rgba(192, 0, 0, 0.08); }
+    .nav-logo { display: flex; align-items: center; cursor: pointer; }
+    .logo-sticker { background: var(--blanc); border-radius: 22px; padding: 12px 18px; box-shadow: 0 6px 16px rgba(192, 0, 0, 0.15); transform: rotate(-2deg); transition: var(--transition); }
+    .nav-logo:hover .logo-sticker { transform: rotate(2deg) scale(1.05); }
+    .logo-sticker img { display: block; height: 120px; width: auto; border-radius: 50%; transition: var(--transition); }
+    header.scrolled .logo-sticker img { height: 80px; }
+    nav ul { display: flex; list-style: none; gap: 4px; align-items: center; }
+    nav a { display: block; padding: 10px 16px; text-decoration: none; color: var(--gris-fonce); font-weight: 700; font-size: 1.02rem; position: relative; transition: var(--transition); white-space: nowrap; }
+    nav a::after { content: ''; position: absolute; left: 16px; right: 16px; bottom: 4px; height: 3px; border-radius: 2px; background: var(--corail); transform: scaleX(0); transform-origin: left; transition: transform 0.3s ease; }
+    nav a:hover::after, nav a.active::after { transform: scaleX(1); }
+    nav a.active { color: var(--corail-fonce); }
+    .menu-toggle { display: none; width: 46px; height: 46px; border: none; background: var(--blanc); color: var(--bleu); border-radius: 12px; font-size: 1.3rem; cursor: pointer; transition: var(--transition); box-shadow: 0 4px 14px rgba(192, 0, 0, 0.15); }
+
+    .hero { min-height: 100vh; display: flex; align-items: center; padding: 150px 30px 80px; position: relative; overflow: hidden; background: var(--creme); }
+    .hero::before, .hero::after { content: ''; position: absolute; border-radius: 50%; filter: blur(2px); opacity: 0.5; z-index: 0; }
+    .hero::before { width: 340px; height: 340px; background: var(--jaune); opacity: 0.18; top: -80px; right: -60px; }
+    .hero::after { width: 260px; height: 260px; background: var(--bleu-vif); opacity: 0.12; bottom: -60px; left: -40px; }
+    .hero-grid { max-width: 1250px; margin: 0 auto; width: 100%; display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 60px; align-items: center; position: relative; z-index: 1; }
+    .hero-eyebrow { font-family: 'Caveat', cursive; font-size: 1.6rem; font-weight: 700; color: var(--corail-fonce); display: inline-block; margin-bottom: 6px; }
+    .hero h1 { font-size: 3.4rem; font-weight: 900; line-height: 1.1; color: var(--bleu-fonce); margin-bottom: 20px; text-wrap: balance; }
+    .hero h1 span { color: var(--corail); }
+    .hero p.lead { font-size: 1.15rem; color: var(--gris-doux); margin-bottom: 36px; max-width: 480px; }
+    .hero-ctas { display: flex; gap: 16px; flex-wrap: wrap; }
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 15px 34px; background: var(--corail); color: white; text-decoration: none; font-weight: 800; font-size: 0.95rem; border-radius: 50px; transition: var(--transition); border: 2px solid var(--corail); box-shadow: 0 10px 24px rgba(46, 125, 50, 0.35); }
+    .btn:hover { background: var(--corail-fonce); border-color: var(--corail-fonce); transform: translateY(-3px); }
+    .btn-outline-bleu { background: transparent; color: var(--bleu); border: 2px solid var(--bleu); box-shadow: none; }
+    .btn-outline-bleu:hover { background: var(--bleu); color: white; }
+    .hero-photo-wrap { position: relative; }
+    .hero-photo { border-radius: 24px; overflow: hidden; transform: rotate(2deg); box-shadow: 0 30px 60px -15px rgba(138, 0, 0, 0.35); border: 8px solid white; }
+    .hero-photo img { display: block; width: 100%; height: 420px; object-fit: cover; }
+    .hero-badge-float { position: absolute; bottom: -22px; left: -26px; background: var(--blanc); border-radius: 18px; padding: 14px 20px; box-shadow: 0 14px 30px rgba(192,0,0,0.2); transform: rotate(-4deg); display: flex; align-items: center; gap: 10px; font-weight: 800; color: var(--bleu-fonce); font-size: 0.95rem; }
+    .hero-badge-float .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--jaune); }
+
+    section { padding: 110px 20px; position: relative; }
+    .container { max-width: 1200px; margin: 0 auto; }
+    .section-header { text-align: center; margin-bottom: 60px; }
+    .section-eyebrow { font-family: 'Caveat', cursive; font-size: 1.5rem; font-weight: 700; color: var(--corail-fonce); display: block; margin-bottom: 4px; }
+    .section-header h2 { font-size: 2.3rem; font-weight: 900; color: var(--bleu-fonce); }
+    .section-header p { color: var(--gris-doux); margin-top: 14px; font-size: 1.05rem; }
+
+    .histoire-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+    .histoire-text h3 { font-size: 1.6rem; color: var(--corail-fonce); margin-bottom: 18px; font-weight: 800; }
+    .histoire-text p { margin-bottom: 18px; line-height: 1.8; color: var(--gris-doux); }
+    .histoire-image { height: 400px; background: url('https://images.unsplash.com/photo-1580582932707-520aed937b7b?q=80&w=1000&auto=format&fit=crop') center/cover; border-radius: 45% 55% 60% 40% / 55% 45% 55% 45%; box-shadow: 0 30px 50px -10px rgba(192, 0, 0, 0.25); }
+
+    .compteurs { background: linear-gradient(135deg, var(--corail-fonce), var(--corail)); color: white; padding: 70px 20px; border-radius: 50px; max-width: 1200px; margin: 0 auto; }
+    .compteurs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 30px; text-align: center; }
+    .compteur-number { font-size: 3.4rem; font-weight: 900; display: inline-block; }
+    .compteur-number::after { content: '+'; font-size: 2rem; }
+    .compteur-item.no-plus .compteur-number::after { content: ''; }
+    .compteur-label { font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.9; margin-top: 6px; }
+
+    .prog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 26px; }
+    .prog-card { background: var(--blanc); border-radius: 26px; padding: 36px 28px; text-align: center; border: 2.5px dashed transparent; transition: var(--transition); box-shadow: 0 10px 26px rgba(192, 0, 0, 0.07); }
+    .prog-card:hover { transform: translateY(-10px) rotate(-1deg); border-color: var(--corail); box-shadow: 0 20px 36px rgba(46, 125, 50, 0.18); }
+    .prog-icon-wrap { width: 70px; height: 70px; margin: 0 auto 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: var(--creme-fonce); font-size: 2.1rem; transition: var(--transition); }
+    .prog-card:hover .prog-icon-wrap { background: var(--jaune); transform: scale(1.1); }
+    .prog-card h3 { font-size: 1.2rem; margin-bottom: 12px; color: var(--bleu-fonce); font-weight: 800; }
+    .prog-card p { color: var(--gris-doux); font-size: 0.93rem; line-height: 1.6; }
+
+    .galerie-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 22px; }
+    .galerie-item { height: 250px; border-radius: 22px; overflow: hidden; position: relative; cursor: pointer; box-shadow: 0 8px 20px rgba(192,0,0,0.1); }
+    .galerie-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+    .galerie-item:hover img { transform: scale(1.12); }
+    .galerie-overlay { position: absolute; inset: 0; background: rgba(46, 125, 50, 0.85); display: flex; justify-content: center; align-items: center; opacity: 0; transition: var(--transition); color: white; font-weight: 800; font-size: 1.1rem; }
+    .galerie-item:hover .galerie-overlay { opacity: 1; }
+
+    .placeholder-section { background: var(--blanc); text-align: center; padding: 55px 20px; border: 2.5px dashed rgba(192,0,0,0.25); border-radius: 30px; margin: 20px auto; max-width: 800px; }
+    .placeholder-section h3 { color: var(--corail-fonce); margin-bottom: 10px; font-weight: 800; }
+
+    footer { background: var(--bleu-fonce); color: #e9c9c9; padding: 60px 20px 20px; border-radius: 50px 50px 0 0; margin-top: 40px; }
+    .footer-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 40px; margin-bottom: 40px; }
+    .footer-col h4 { color: white; margin-bottom: 18px; font-size: 1.05rem; }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 10px; }
+    .footer-col a { color: #e9c9c9; text-decoration: none; transition: var(--transition); }
+    .footer-col a:hover { color: var(--jaune); padding-left: 4px; }
+    .footer-bottom { text-align: center; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.12); font-size: 0.85rem; }
+
+    [data-anim] { opacity: 0; transform: translateY(26px) scale(0.98); transition: opacity 0.8s ease, transform 0.8s ease; }
+    [data-anim].anim-in { opacity: 1; transform: translateY(0) scale(1); }
+    [data-anim][data-delay="1"] { transition-delay: 0.1s; }
+    [data-anim][data-delay="2"] { transition-delay: 0.2s; }
+    [data-anim][data-delay="3"] { transition-delay: 0.3s; }
+    [data-anim][data-delay="4"] { transition-delay: 0.4s; }
+
+    @keyframes stickerIn { to { opacity: 1; transform: rotate(-3deg) scale(1); } }
+    @keyframes dotBounce { 0%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-10px); } }
+
+    @media (max-width: 992px) {
+      .hero-grid { grid-template-columns: 1fr; }
+      .hero-photo-wrap { order: -1; max-width: 420px; margin: 0 auto; }
+      .hero h1 { font-size: 2.6rem; }
+      .histoire-grid { grid-template-columns: 1fr; }
+      .histoire-image { height: 300px; }
+    }
+    @media (max-width: 860px) {
+      .menu-toggle { display: block; }
+      nav { position: fixed; top: 76px; left: 16px; right: 16px; opacity: 0; visibility: hidden; transform: translateY(-14px); transition: var(--transition); background: var(--blanc); border-radius: 24px; box-shadow: 0 24px 50px rgba(192,0,0,0.2); padding: 10px; }
+      nav.active { opacity: 1; visibility: visible; transform: translateY(0); }
+      nav ul { flex-direction: column; align-items: stretch; gap: 2px; }
+      nav a { padding: 14px 18px; text-align: center; border-radius: 14px; }
+      nav a::after { display: none; }
+      nav a.active { background: var(--creme-fonce); }
+      .hero h1 { font-size: 2.1rem; }
+      .compteur-number { font-size: 2.4rem; }
+      .logo-sticker img { height: 80px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="apercu-badge">APERÇU — style Liantsoa, couleurs Mikolo</div>
+  <div id="progress-bar"></div>
+
+  <div id="preloader">
+    <div class="logo-sticker-intro"><img src="logo.jpg" alt="Mikolo"></div>
+    <div class="loading-dots"><span></span><span></span><span></span></div>
+  </div>
+
+  <header id="header">
+    <div class="nav-container">
+      <div class="nav-logo" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+        <div class="logo-sticker"><img src="logo.jpg" alt="Mikolo"></div>
+      </div>
+      <button class="menu-toggle" id="menuToggle">☰</button>
+      <nav id="mainNav">
+        <ul>
+          <li><a href="#accueil" class="active">Accueil</a></li>
+          <li><a href="#histoire">Histoire</a></li>
+          <li><a href="#programmes">Programmes</a></li>
+          <li><a href="#galerie">Galerie</a></li>
+          <li><a href="#equipe">Équipe</a></li>
+          <li><a href="#actualites">Actualités</a></li>
+          <li><a href="#inscriptions">Inscriptions</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero" id="accueil">
+    <div class="hero-grid">
+      <div>
+        <span class="hero-eyebrow">bienvenue chez nous</span>
+        <h1>Bienvenue à<br>l'École <span>Mikolo</span></h1>
+        <p class="lead">L'excellence académique et l'épanouissement personnel au cœur de notre projet éducatif, de la maternelle au lycée.</p>
+        <div class="hero-ctas">
+          <a href="#inscriptions" class="btn">S'inscrire maintenant</a>
+          <a href="#histoire" class="btn btn-outline-bleu">Découvrir l'école</a>
+        </div>
+      </div>
+      <div class="hero-photo-wrap" data-anim="zoom-in">
+        <div class="hero-photo"><img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=900&auto=format&fit=crop" alt="Élèves de l'École Mikolo"></div>
+        <div class="hero-badge-float"><span class="dot"></span> 30 ans d'expérience</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="histoire">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-eyebrow" data-anim="fade-up">notre parcours</span>
+        <h2 data-anim="fade-up">Notre Histoire</h2>
+        <p data-anim="fade-up" data-delay="1">Un héritage de passion et de dévouement depuis 1995</p>
+      </div>
+      <div class="histoire-grid">
+        <div class="histoire-text">
+          <h3 data-anim="fade-up">Plus qu'une école, une famille</h3>
+          <p data-anim="fade-up" data-delay="1">Fondée en 1995, l'École Mikolo a vu le jour grâce à la vision de pédagogues passionnés, convaincus que chaque enfant mérite un cadre bienveillant et exigeant pour grandir et s'épanouir.</p>
+          <p data-anim="fade-up" data-delay="2">Nos valeurs : <strong>Respect, Excellence et Solidarité</strong>.</p>
+        </div>
+        <div class="histoire-image" data-anim="zoom-in"></div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding: 0 20px 110px;">
+    <div class="compteurs" data-anim="zoom-in">
+      <div class="compteurs-grid">
+        <div class="compteur-item"><div class="compteur-number" data-count="500">0</div><div class="compteur-label">Élèves</div></div>
+        <div class="compteur-item"><div class="compteur-number" data-count="40">0</div><div class="compteur-label">Enseignants</div></div>
+        <div class="compteur-item no-plus"><div class="compteur-number" data-count="98" data-suffix="%">0</div><div class="compteur-label">Réussite</div></div>
+        <div class="compteur-item"><div class="compteur-number" data-count="30">0</div><div class="compteur-label">Années</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="programmes" style="background: var(--creme-fonce);">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-eyebrow" data-anim="fade-up">pour chaque âge</span>
+        <h2 data-anim="fade-up">Nos Programmes</h2>
+        <p data-anim="fade-up" data-delay="1">Un parcours adapté à chaque étape de la vie</p>
+      </div>
+      <div class="prog-grid">
+        <div class="prog-card" data-anim="fade-up" data-delay="1"><div class="prog-icon-wrap">🧸</div><h3>Maternelle</h3><p>Éveil, socialisation et découverte par le jeu.</p></div>
+        <div class="prog-card" data-anim="fade-up" data-delay="2"><div class="prog-icon-wrap">✏️</div><h3>Primaire</h3><p>Apprentissage des fondamentaux et épanouissement.</p></div>
+        <div class="prog-card" data-anim="fade-up" data-delay="3"><div class="prog-icon-wrap">📚</div><h3>Collège</h3><p>Esprit critique, autonomie et méthode de travail.</p></div>
+        <div class="prog-card" data-anim="fade-up" data-delay="4"><div class="prog-icon-wrap">🎓</div><h3>Lycée</h3><p>Préparation aux examens et orientation post-bac.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="galerie">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-eyebrow" data-anim="fade-up">en images</span>
+        <h2 data-anim="fade-up">Galerie</h2>
+        <p data-anim="fade-up" data-delay="1">Découvrez la vie à l'École Mikolo en images</p>
+      </div>
+      <div class="galerie-grid">
+        <div class="galerie-item" data-anim="fade-up" data-delay="1"><img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=800&auto=format&fit=crop" alt="Salle de classe"><div class="galerie-overlay">Salle de classe</div></div>
+        <div class="galerie-item" data-anim="fade-up" data-delay="2"><img src="https://images.unsplash.com/photo-1577896851231-70ef18881754?q=80&w=800&auto=format&fit=crop" alt="Bibliothèque"><div class="galerie-overlay">Bibliothèque</div></div>
+        <div class="galerie-item" data-anim="fade-up" data-delay="3"><img src="https://images.unsplash.com/photo-1571260899304-425eee4c7efc?q=80&w=800&auto=format&fit=crop" alt="Cour de récréation"><div class="galerie-overlay">Cour de récréation</div></div>
+        <div class="galerie-item" data-anim="fade-up" data-delay="4"><img src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?q=80&w=800&auto=format&fit=crop" alt="Activités"><div class="galerie-overlay">Activités</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="equipe" style="background: var(--creme-fonce);">
+    <div class="container">
+      <div class="section-header"><span class="section-eyebrow" data-anim="fade-up">des passionnés</span><h2 data-anim="fade-up">Notre Équipe</h2><p data-anim="fade-up" data-delay="1">Des professionnels passionnés à votre écoute</p></div>
+      <div class="placeholder-section" style="background: white;" data-anim="zoom-in">
+        <h3>Une équipe dévouée</h3>
+        <p>Nos enseignants et notre personnel administratif sont sélectionnés pour leur expertise et leur bienveillance.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="actualites">
+    <div class="container">
+      <div class="section-header"><span class="section-eyebrow" data-anim="fade-up">ça se passe ici</span><h2 data-anim="fade-up">Actualités</h2><p data-anim="fade-up" data-delay="1">Les dernières nouvelles de l'école</p></div>
+      <div class="placeholder-section" data-anim="fade-up" data-delay="1">
+        <h3>Restez informés</h3>
+        <p>Retrouvez ici nos événements, sorties scolaires, spectacles et temps forts de l'année.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="inscriptions" style="background: var(--creme-fonce);">
+    <div class="container">
+      <div class="section-header"><span class="section-eyebrow" data-anim="fade-up">nous rejoindre</span><h2 data-anim="fade-up">Inscriptions</h2><p data-anim="fade-up" data-delay="1">Rejoignez la famille Mikolo</p></div>
+      <div class="placeholder-section" style="background: white; text-align: center;" data-anim="zoom-in">
+        <h3>Prêt à nous rejoindre ?</h3>
+        <p style="margin-bottom: 26px; color: var(--gris-doux);">Les inscriptions sont ouvertes pour l'année scolaire à venir. Découvrez les étapes et les documents à préparer.</p>
+        <a href="#contact" class="btn">Nous Contacter</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="container">
+      <div class="section-header"><span class="section-eyebrow" data-anim="fade-up">on se parle ?</span><h2 data-anim="fade-up">Contact</h2><p data-anim="fade-up" data-delay="1">Nous sommes à votre disposition</p></div>
+      <div class="placeholder-section" style="border-color: var(--corail);" data-anim="fade-up" data-delay="1">
+        <h3>École Mikolo</h3>
+        <p style="color: var(--gris-doux);">📍 Ambatondrazaka, Madagascar<br><br>📞 +261 32 12 345 67<br><br>✉️ contact@ecolemikolo.com</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-col" data-anim="fade-up"><h4>ÉCOLE MIKOLO</h4><p>Former les esprits de demain dans un cadre d'excellence et de bienveillance.</p></div>
+      <div class="footer-col" data-anim="fade-up" data-delay="1"><h4>Navigation</h4><ul><li><a href="#accueil">Accueil</a></li><li><a href="#histoire">Notre Histoire</a></li><li><a href="#programmes">Programmes</a></li><li><a href="#galerie">Galerie</a></li></ul></div>
+      <div class="footer-col" data-anim="fade-up" data-delay="2"><h4>Informations</h4><ul><li><a href="#inscriptions">Inscriptions</a></li><li><a href="#actualites">Actualités</a></li><li><a href="#contact">Contact</a></li><li><a href="#">Mentions légales</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><p>© 2026 École Mikolo. Tous droits réservés. | Conçu avec passion.</p></div>
+  </footer>
+
+  <script>
+    window.addEventListener('load', () => {
+      const preloader = document.getElementById('preloader');
+      setTimeout(() => { preloader.classList.add('hidden'); setTimeout(startCompteurs, 400); }, 1200);
+    });
+    const progressBar = document.getElementById('progress-bar');
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      progressBar.style.width = (scrollTop / docHeight) * 100 + '%';
+    });
+    const animatedElements = document.querySelectorAll('[data-anim]');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('anim-in'); observer.unobserve(entry.target); } });
+    }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+    animatedElements.forEach(el => observer.observe(el));
+    let compteursStarted = false;
+    function startCompteurs() {
+      if (compteursStarted) return; compteursStarted = true;
+      const compteurs = document.querySelectorAll('.compteur-number');
+      const compteurObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const el = entry.target;
+            const target = parseInt(el.getAttribute('data-count'));
+            const suffix = el.getAttribute('data-suffix') || '';
+            const duration = 1800; const start = performance.now();
+            function animate(now) {
+              const progress = Math.min((now - start) / duration, 1);
+              const eased = 1 - Math.pow(1 - progress, 3);
+              el.textContent = Math.floor(eased * target) + (progress === 1 ? suffix : '');
+              if (progress < 1) requestAnimationFrame(animate); else el.textContent = target + suffix;
+            }
+            requestAnimationFrame(animate); compteurObserver.unobserve(el);
+          }
+        });
+      }, { threshold: 0.5 });
+      compteurs.forEach(c => compteurObserver.observe(c));
+    }
+    const menuToggle = document.getElementById('menuToggle');
+    const mainNav = document.getElementById('mainNav');
+    menuToggle.addEventListener('click', () => mainNav.classList.toggle('active'));
+    document.querySelectorAll('nav ul li a').forEach(link => link.addEventListener('click', () => mainNav.classList.remove('active')));
+    const header = document.getElementById('header');
+    window.addEventListener('scroll', () => { header.classList.toggle('scrolled', window.scrollY > 40); });
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('nav a');
+    window.addEventListener('scroll', () => {
+      const scrollY = window.pageYOffset;
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop - 200;
+        const sectionId = section.getAttribute('id');
+        if (scrollY > sectionTop && scrollY <= sectionTop + section.offsetHeight) {
+          navLinks.forEach(link => { link.classList.remove('active'); if (link.getAttribute('href') === '#' + sectionId) link.classList.add('active'); });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
